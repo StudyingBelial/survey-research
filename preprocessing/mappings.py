@@ -1,15 +1,16 @@
+import numpy as np
+
 occupation_map = {
     # student variants
     "student": "student",
-    "students": "student",
     "student m": "student",
     "student rn": "student",
     "student we": "student",
     "as student": "student",
     "student right now": "student",
-    "student right now.": "student",
     "i'm a student": "student",
     "i am a student": "student",
+    "i am an student": "student",
     "bachelor student": "student",
     "bachelor's student": "student",
     "student (still studying)": "student",
@@ -28,23 +29,54 @@ occupation_map = {
     "youth educator and an it student": "student",
     "student and housewife": "student",
     "student and teaching": "student",
-    "studenr" : "student",
+    "studenr": "student",
+    "studient": "student",
+    "my occupation is a student": "student",
+    "nothing i am a student": "student",
+    "student now": "student",
+    "student /entrepreneur": "student",
+    "student (undergraduate engineer)": "student",
+    "not working yet, student": "student",
+    "currently i am student pursuing bachelor degree on civil engineering": "student",
+    "student but also a genai engineering intern": "student",
+    "csit": "student",
+    "csit(student)": "student",
+    "student and tutor": "student",
+    "i am a student, bro": "student",
+    "i am an undergraduate student": "student",
+    "educational youtuber and student": "student",
+    "learning": "student",
+    "ca student": "student",
+    "undergraduate student": "student",
+    "im a student": "student",
 
     # unemployed / no occupation
     "unemployed": "unemployed",
     "not working": "unemployed",
     "no occupation": "unemployed",
-    "i dont work right now.": "unemployed",
-    "i don't work right now.": "unemployed",
+    "i dont work right now": "unemployed",
+    "i don't work right now": "unemployed",
     "nothing": "unemployed",
     "null": "unemployed",
     "not": "unemployed",
+    "not yet working": "unemployed",
     "job": "unemployed",  # ambiguous/no-info, treat as unusable/unclear
+    "no": "unemployed",
+    "no occupation till now": "unemployed",
+    "not employed yet": "unemployed",
+    "not done yet": "unemployed",
+    "na": "unemployed",
+    "berojgar": "unemployed",  # Nepali for "unemployed"
+    "jobless": "unemployed",
+    "not yet": "unemployed",
+    "right now nothing": "unemployed",
 
     # teaching
     "teacher": "teacher",
     "teaching": "teacher",
     "education learning": "teacher",
+    "tutor": "teacher",
+    "part time teacher": "teacher",
 
     # engineering / tech
     "engineering": "engineering/tech",
@@ -60,6 +92,16 @@ occupation_map = {
     "security": "engineering/tech",
     "seecurity operation": "engineering/tech",
     "security operation": "engineering/tech",
+    "frontend developer": "engineering/tech",
+    "quality assurance analyst": "engineering/tech",
+    "bss noc analyst": "engineering/tech",
+    "data scientist/oyo corper": "engineering/tech",
+    "web developer": "engineering/tech",
+    "computer engineer": "engineering/tech",
+    "etl associate": "engineering/tech",
+    "data scientist": "engineering/tech",
+    "engineer": "engineering/tech",
+    "data science intern": "engineering/tech",
 
     # management/business
     "ceo": "management/business",
@@ -76,14 +118,18 @@ occupation_map = {
     "accounting": "management/business",
     "printing": "management/business",
     "part time job": "management/business",
+    "auditors": "management/business",
+    "accountant": "management/business",
+    "supervisor": "management/business",
 
     # medical
     "doctor": "medical",
     "nurse": "medical",
     "nursing": "medical",
     "pharmacist": "medical",
+    "becoming ayurvedic doctor": "medical",
 
-    # misc professional
+    # misc professional / other
     "i'm a team leader in customer service": "other",
     "research intern": "other",
     "researcher": "other",
@@ -93,51 +139,65 @@ occupation_map = {
     "self-employed": "other",
     "graphic designer": "other",
     "graphics designer and video editor": "other",
+    "architect": "other",
+    "customer service representative": "other",
+    "freelancer and network marketer": "other",
+    "video editor": "other",
+    "graphic and product designer": "other",
+    "aviation safety officer": "other",
+    "sales assistant": "other",
+    "sales": "other",
 }
 
 ethnicity_map = {
     "asian" : "asian",
-    "african" : "african/non-asian",
-    "american indian" : "asian",
-    "latino" : "african/non-asian",
+    "african" : "african",
+    "american indian" : "other",
+    "latino" : "other",
     "nepali" : "asian",
-    "black african/african american" : "african/non-asian",
+    "black african/african american" : "african",
     "indian" : "asian",
     "bramin" : "asian",
+    "nepalses" : "asian",
+    "hispanic" : "other",
+    "indo aryan" : "other",
+    "info-aryan" : "other",
+    "khas-arya" : "other",
+    "aryan" : "other",
 }
 
 language_map = {
-    "english": "english", "english.": "english", ".english":"english", "little bit english" : "english", "little" : "english", "bit" : "english",
-    "hindi": "south_asian_other", "hindni": "south_asian_other", ".hindi":"south_asian_other",
-    "arabic": "global_other", "arebic": "global_other",
+    "english": "english", "little bit english" : "english", "little" : "english", "bit" : "english",
+    "hindi": "hindi", "hindni": "hindi",
+    "arabic": "global", "arebic": "global",
     "bajika": "south_asian_other",
     "bhojpuri": "south_asian_other", "bojpuri": "south_asian_other",
-    "chinese": "global_other",
+    "chinese": "global",
     "dotali": "nepali_dominant", "doteli": "nepali_dominant",
     "efik": "african_other",
     "ekoi": "african_other",
-    "french": "global_other",
-    "greek": "global_other",
+    "french": "global",
+    "greek": "global",
     "gurung": "nepali_dominant",
-    "hausa": "african_other", "hausa.": "african_other",
+    "hausa": "african_other",
     "ibibio": "african_other",
     "igbo": "african_other",
-    "japanese": "global_other",
-    "korean": "global_other",
-    "latin": "global_other",
+    "japanese": "global",
+    "korean": "global",
+    "latin": "global",
     "madheshi": "nepali_dominant",
     "magar": "nepali_dominant",
     "maithali": "south_asian_other", "maithili": "south_asian_other", "maithilils": "south_asian_other",
     "maithli": "south_asian_other", "mathali": "south_asian_other", "mathi": "south_asian_other",
     "marwadi": "south_asian_other",
-    "nep": "nepali_dominant", "nepal": "nepali_dominant", "nepali": "nepali_dominant",
-    "neplai": "nepali_dominant", "neplit": "nepali_dominant", "neoali": "nepali_dominant",
+    "nep": "nepali", "nepal": "nepali", "nepali": "nepali", "nepalin" : "nepali", "nepalienglish" : "nepali;english",
+    "neplai": "nepali", "neplit": "nepali", "neoali": "nepali",
     "newari": "nepali_dominant",
     "pahadi": "nepali_dominant",
-    "pidgin": "global_other",
+    "pidgin": "african_other",
     "rai": "nepali_dominant",
     "sanskrit": "nepali_dominant",
-    "spanish": "global_other",
+    "spanish": "global",
     "swahili": "african_other",
     "tharu": "nepali_dominant",
     "urdu": "south_asian_other",
@@ -146,9 +206,21 @@ language_map = {
     "tapa" : "african_other",
     "and": "",
     "nah": "",
+    "nil": "",
+    "engine" : "",
+    "(ethnic" : "",
+    "tongue)" : "",
     "awadhi": "south_asian_other",
+    "tamang": "nepali_dominant",
+    "phadi" : "nepali_dominant",
+    "telugu" : "south_asian_other",
+    "bajhangi" : "nepali_dominant",
+    "german" : "global",
+    "ila" : "african_other",
+    "tamil" : "south_asian_other",
+    "finnish" : "global",
+    "darchuleli" : "nepali_dominant",
 }
-
 region_map = {
     "nepal" : "nepal",
     "nigeria" : "africa_other",
@@ -159,6 +231,8 @@ region_map = {
     "tanzania" : "africa_other",
     "estonia" : "global",
     "qatar" : "asia_other",
+    "finland" : "global",
+    "thailand" : "asia_other",
 }
 
 ordinal_maps = {
@@ -166,6 +240,7 @@ ordinal_maps = {
         "never": 1,
         "yearly": 2,
         "weekly": 3,
+        "seasonal": 2,
         "daily": 4,
     },
     "daily_ai_exposure": {
@@ -176,11 +251,11 @@ ordinal_maps = {
         "daily": 5,
     },
     "computer_proficiency": {
-        "not proficient  i struggle with using computers and only use them when absolutely necessary, usually with assistance.": 1,
-        "limited proficiency  i can do simple tasks with guidance, but i often need help and do not feel confident using computers independently.": 2,
-        "moderately proficient  i can perform basic tasks like browsing the internet, sending emails, and using office software, but i may need help with more complex problems.": 3,
-        "proficient  i am comfortable using computers for most tasks such as browsing, word processing, and using common applications. i can solve minor issues on my own.": 4,
-        "very proficient  i am highly skilled with computers, including software, internet use, and troubleshooting. i can easily learn new programs and help others.": 5,
+        "not proficient i struggle with using computers and only use them when absolutely necessary, usually with assistance": 1,
+        "limited proficiency i can do simple tasks with guidance, but i often need help and do not feel confident using computers independently": 2,
+        "moderately proficient i can perform basic tasks like browsing the internet, sending emails, and using office software, but i may need help with more complex problems": 3,
+        "proficient i am comfortable using computers for most tasks such as browsing, word processing, and using common applications i can solve minor issues on my own": 4,
+        "very proficient i am highly skilled with computers, including software, internet use, and troubleshooting i can easily learn new programs and help others": 5,
     },
     "ai_familiarity": {
         "not at all familiar": 1,
@@ -505,107 +580,152 @@ industry_map = {
     "education": "education",
     "student": "education",
     "student in it": "education",
+    "i am an student": "education",
+    "student right now": "education",
+    "studying": "education",
+    "i am a student": "education",
+    "currently the student": "education",
 
     # IT
-    "it (information technology)": "tech",
+    "tech": "tech",
+    "it": "tech",
     "data management": "tech",
+    "telecommunication": "tech",
 
     # Government / Public
+    "public/government": "public/government",
     "government": "public/government",
     "public service": "public/government",
+    "environment": "public/government",
+    "ngo": "public/government",
 
     # Healthcare
+    "healthcare": "healthcare",
     "health": "healthcare",
-    "health ": "healthcare",     
+    "health ": "healthcare",
     "hospital": "healthcare",
     "medicine": "healthcare",
     "dentistry": "healthcare",
+    "doctor": "healthcare",
+    "medical": "healthcare",
 
-    # Finance
+    # Finance / Trade
+    "finance/trade": "finance/trade",
     "financial": "finance/trade",
+    "trading": "finance/trade",
+    "e-commerce": "finance/trade",
+    "fmcg food product import": "finance/trade",
 
-    # Engineering
+    # Production / Manufacturing
+    "production/manufacturing": "production/manufacturing",
+    "manufacturing": "production/manufacturing",
+    "processing": "production/manufacturing",
+    "agriculture": "production/manufacturing",
+    "construction": "production/manufacturing",
+    "automobile": "production/manufacturing",
+
+    # None / Other
+    "none/other": "none/other",
     "engineering": "none/other",
     "engineering ": "none/other",
     "archi": "none/other",
-    "processing" : "none/other",
-
-    # Telecommunications
-    "telecommunication": "tech",
-
-    # Manufacturing
-    "manufacturing": "production/manufacturing",
-    "processing": "production/manufacturing",
-
-    # Agriculture
-    "agriculture": "production/manufacturing",
-
-    # Transportation
+    "architecture": "none/other",
     "transport industry": "none/other",
-
-    # Trade
-    "trading": "finance/trade",
-
-    # Environment
-    "environment": "public/government",
-
-    # NGOs
-    "ngo": "public/government",
-
-    # Unemployed / none
     "none as of right now": "none/other",
     "nothing": "none/other",
+    "not working": "none/other",
+    "not yet working": "none/other",
+    "beauty": "none/other",
+    "unemployed": "none/other",
+    "civil engineering": "none/other",
+    "aviation": "none/other",
+    "consulting services": "none/other",
+    "": "none/other",
 }
 
-ai_tools_map = {
+app_use_ai_map = {
     "ai in agriculture" : "agriculture",
+    
     "chat gpt and gemini" : "gen_ai/chatbot",
     "chat gpt, gemini etc" : "gen_ai/chatbot",
     "chatgpt, deepseek" : "gen_ai/chatbot",
     "chatgpt, meta ai" : "gen_ai/chatbot",
-    "customer service chatbots" : "gen_ai/chatbot",
-    "digital payment platforms" : "finance",
+    "chatgpt,deepseek,gemini" : "gen_ai/chatbot",
+    "chatgpt, deepseek, grok, gemini, microsoft copilot , perplexity" : "gen_ai/chatbot",
+    "chatgpt" : "gen_ai/chatbot",
+    "chatgpt, gemini, grok, copilot,etc" : "gen_ai/chatbot",
+    "chat gpt, gemini" : "gen_ai/chatbot",
+    "ai chatbots" : "gen_ai/chatbot",
+    "study, research, audio video creating etc" : "gen_ai/chatbot",
+    "gaming, image creation, for studies" : "gen_ai/chatbot",
+    "ai assisted content creation tools" : "gen_ai/chatbot",
     "education , and ai for content generation and image creation" : "gen_ai/chatbot",
-    "fraud detection systems" : "finance",
     "graphic design applications like canva" : "gen_ai/chatbot",
-    "healthcare tools" : "healthcare",
-    "no now" : "",
     "openai embeddings, llms such as chatgpt and github copilot" : "gen_ai/chatbot",
-    "openai like chargpt." : "gen_ai/chatbot",
-    "product or content recommendation systems" : "product/recommendation_system",
-    "ride-hailing or delivery apps" : "product/recommendation_system",
-    "social media platforms using ai" : "socialmedia/app",
+    "education deepseek" : "gen_ai/chatbot",
+    "llms, designing" : "gen_ai/chatbot",
+    "openai like chargpt" : "gen_ai/chatbot",
+    
+    "customer service chatbots" : "customer_service_chatbot",
+    
+    "digital payment platforms" : "digital_payment_platforms",
+    "fraud detection systems" : "fraud_detection_systems",
+    
+    "healthcare tools" : "healthcare",
+    
+    "product or content recommendation systems" : "recommendation_system",
+    
+    "ride-hailing or delivery apps" : "product",
+    
+    "social media platforms using ai" : "social_media",
+    
+    "disaster alert systems" : "other/none",
+    "ai in educations'" : "other/none",
+    "no now" : "other/none",
 }
 
-app_use_ai_map = {
-    "calculators" : "productivity/office",
-    "calendar apps" : "productivity/office",
-    "drones" : "travel/mobility",
-    "email spam filters" : "productivity/office",
-    "face unlock or facial recognition apps" : "device_intelligence",
-    "hotel booking sites" : "travel/mobility",
-    "i dont really know" : "",
-    "i would choose multiple of the above given options" : "",
-    "messaging apps" : "socialmedia/messaging",
-    "navigation apps" : "travel/mobility",
-    "none of the above" : "",
-    "product/content recommendation platforms" : "",
-    "ride-sharing apps" : "travel/mobility",
-    "search engines" : "search_engine",
-    "smartphone camera features": "device_intelligence",
-    "social media platforms" : "socialmedia/messaging",
-    "video conferencing tools" : "socialmedia/messaging",
-    "web browsers" : "search_engine",
-    "word processing software" : "productivity/office",
+ai_tools_map = {
+    "calculators": "calculators",
+    "calendar apps": "calendar_apps",
+    "email spam filters": "email_spam_filters",
+    "word processing software": "word_processing_software",
+
+    "drones": "drones",
+    "hotel booking sites": "hotel_booking_sites",
+    "navigation apps": "navigation_apps",
+    "ride-sharing apps": "ride_sharing_apps",
+
+    "face unlock or facial recognition apps": "facial_recognition",
+    "smartphone camera features": "smartphone_camera",
+
+    "messaging apps": "messaging_apps",
+    "social media platforms": "social_media_platforms",
+    "video conferencing tools": "video_conferencing_tools",
+    
+    "product/content recommendation platforms": "recommendation platforms",
+
+    "web browsers": "web_browsers",
+    "search engines": "search_engines",
+    "i dont really know": "none",
+    "i would choose multiple of the above given options": "none",
+    "none of the above": "none",
 }
 
 education_map = {
-    "bachelor's degree" : "bachelors/masters",
-    "high school" : "high school",
-    "master's degree" : "bachelors/masters",
-    "bachelor running" : "bachelors/masters",
-    "phd. persuing" : "above_masters/pdh",
-    "computer engineering" : "bachelors/masters",
+    "bachelor's degree" : "bachelors",
+    "high school" : "high_school",
+    "lower secondary" : "under_highschool",
+    "prefer not to say" : "no_education/unspecified",
+    "middle school" : "under_highschool",
+    "8 class" : "under_highschool",
+    "class 8" : "under_highschool",
+    "diploma" : "bachelors",
+    "ca , cap 3" : "bachelors",
+    "master's degree" : "masters",
+    "bachelor running" : "bachelors",
+    "phd persuing" : "above_masters/phd",
+    "doctorate degree" : "above_masters/phd",
+    "computer engineering" : "bachelors",
 }
 
 benefit_to_country_map = {
@@ -618,11 +738,11 @@ benefit_to_country_map = {
 }
 
 concerns_about_ai_map = {
-    "loss of jobs": "Loss of jobs",
-    "invasion of privacy": "Invasion of privacy",
-    "spread of misinformation": "Spread of misinformation",
-    "over-dependence on technology": "Over-dependence on technology",
-    "bias or discrimination in decisions": "Bias or discrimination in decisions",
+    "loss of jobs": "loss of jobs",
+    "invasion of privacy": "invasion of privacy",
+    "spread of misinformation": "spread of misinformation",
+    "over-dependence on technology": "overdependence on technology",
+    "bias or discrimination in decisions": "bias or discrimination in decisions",
 }
 
 residence_type_map = {
@@ -631,4 +751,224 @@ residence_type_map = {
     "rural" : "rural",
     "municipality" : "suburban",
     "city" : "urban",
+    "mahendranagar, kanchanpur , nepal" : "suburban"
+}
+
+raw_occupation_map = {
+    # student variants
+    "student": "student",
+    "student m": "student",
+    "student rn": "student",
+    "student we": "student",
+    "as student": "student",
+    "student right now": "student",
+    "i'm a student": "student",
+    "i am a student": "student",
+    "i am an student": "student",
+    "bachelor student": "student",
+    "bachelor's student": "student",
+    "student (still studying)": "student",
+    "currently studying": "student",
+    "studying right now": "student",
+    "studying": "student",
+    "study": "student",
+    "engineering student": "student",
+    "it student": "student",
+    "architect student": "student",
+    "work as a student": "student",
+    "iam undergraduate student": "student",
+    "student{ ioe pulchowk campus, computer engineering}": "student",
+    "student{ioe pulchowk campus, computer engineering)": "student",
+    "student, web3 dev": "student",
+    "youth educator and an it student": "student",
+    "student and housewife": "student",
+    "student and teaching": "student",
+    "studenr": "student",
+    "studient": "student",
+    "my occupation is a student": "student",
+    "nothing i am a student": "student",
+    "student now": "student",
+    "student /entrepreneur": "student",
+    "student (undergraduate engineer)": "student",
+    "not working yet, student": "student",
+    "currently i am student pursuing bachelor degree on civil engineering": "student",
+    "student but also a genai engineering intern": "student",
+    "csit": "student",
+    "csit(student)": "student",
+    "student and tutor": "student",
+    "i am a student, bro": "student",
+    "i am an undergraduate student": "student",
+    "educational youtuber and student": "student",
+    "learning": "student",
+    "ca student": "student",
+    "undergraduate student": "student",
+    "im a student": "student",
+
+    # unemployed / no occupation
+    "unemployed": "unemployed",
+    "not working": "unemployed",
+    "no occupation": "unemployed",
+    "i dont work right now": "unemployed",
+    "i don't work right now": "unemployed",
+    "nothing": "unemployed",
+    "null": "unemployed",
+    "not": "unemployed",
+    "not yet working": "unemployed",
+    "no": "unemployed",
+    "no occupation till now": "unemployed",
+    "not employed yet": "unemployed",
+    "not done yet": "unemployed",
+    "na": "unemployed",
+    "berojgar": "unemployed",
+    "jobless": "unemployed",
+    "not yet": "unemployed",
+    "right now nothing": "unemployed",
+
+    # unclear / no real info given
+    "job": "job",
+    "part time job": "part time job",
+    "employee": "employee",
+
+    # teaching
+    "teacher": "teacher",
+    "teaching": "teaching",
+    "education learning": "education learning",
+    "tutor": "tutor",
+    "part time teacher": "part time teacher",
+
+    # engineering / tech
+    "engineering": "engineering",
+    "software engineer": "software engineer",
+    "software engineering": "software engineering",
+    "electrical engineer": "electrical engineer",
+    "civil engineer": "civil engineer",
+    "developer": "developer",
+    "junior machine learning engineer": "junior machine learning engineer",
+    "data analyst": "data analyst",
+    "data management specialist": "data management specialist",
+    "cybersecurity analyst": "cybersecurity analyst",
+    "security": "security",
+    "seecurity operation": "security operation",
+    "security operation": "security operation",
+    "frontend developer": "frontend developer",
+    "quality assurance analyst": "quality assurance analyst",
+    "bss noc analyst": "bss noc analyst",
+    "data scientist/oyo corper": "data scientist/oyo corper",
+    "web developer": "web developer",
+    "computer engineer": "computer engineer",
+    "etl associate": "etl associate",
+    "data scientist": "data scientist",
+    "engineer": "engineer",
+    "data science intern": "data science intern",
+
+    # management/business
+    "ceo": "ceo",
+    "digital project manager": "digital project manager",
+    "office manager": "office manager",
+    "brand manager": "brand manager",
+    "opd coordinator": "opd coordinator",
+    "shipping coordinator": "shipping coordinator",
+    "entrepreneur": "entrepreneur",
+    "enterpreneur": "entrepreneur",
+    "business": "business",
+    "banking sector": "banking sector",
+    "accounting": "accounting",
+    "printing": "printing",
+    "auditors": "auditors",
+    "accountant": "accountant",
+    "supervisor": "supervisor",
+
+    # medical
+    "doctor": "doctor",
+    "nurse": "nurse",
+    "nursing": "nursing",
+    "pharmacist": "pharmacist",
+    "becoming ayurvedic doctor": "becoming ayurvedic doctor",
+
+    # misc professional / other
+    "i'm a team leader in customer service": "i'm a team leader in customer service",
+    "research intern": "research intern",
+    "researcher": "researcher",
+    "social worker": "social worker",
+    "counsellor": "counsellor",
+    "self employed": "self employed",
+    "self-employed": "self employed",
+    "graphic designer": "graphic designer",
+    "graphics designer and video editor": "graphics designer and video editor",
+    "architect": "architect",
+    "customer service representative": "customer service representative",
+    "freelancer and network marketer": "freelancer and network marketer",
+    "video editor": "video editor",
+    "graphic and product designer": "graphic and product designer",
+    "aviation safety officer": "aviation safety officer",
+    "sales assistant": "sales assistant",
+    "sales": "sales",
+}
+
+raw_industry_map = {
+    # Education
+    "education": "education",
+    "student": "student",
+    "student in it": "student in it",
+    "i am an student": "i am an student",
+    "student right now": "student right now",
+    "studying": "studying",
+    "i am a student": "i am a student",
+    "currently the student": "currently the student",
+
+    # IT
+    "tech": "tech",
+    "it": "it",
+    "data management": "data management",
+    "telecommunication": "telecommunication",
+
+    # Government / Public
+    "public/government": "public/government",
+    "government": "government",
+    "public service": "public service",
+    "environment": "environment",
+    "ngo": "ngo",
+
+    # Healthcare
+    "healthcare": "healthcare",
+    "health": "health",
+    "health ": "health",
+    "hospital": "hospital",
+    "medicine": "medicine",
+    "dentistry": "dentistry",
+    "doctor": "doctor",
+    "medical": "medical",
+
+    # Finance / Trade
+    "finance/trade": "finance/trade",
+    "financial": "financial",
+    "trading": "trading",
+    "e-commerce": "e-commerce",
+    "fmcg food product import": "fmcg food product import",
+
+    # Production / Manufacturing
+    "production/manufacturing": "production/manufacturing",
+    "manufacturing": "manufacturing",
+    "processing": "processing",
+    "agriculture": "agriculture",
+    "construction": "construction",
+    "automobile": "automobile",
+
+    # None / Other
+    "none/other": "none/other",
+    "engineering": "engineering",
+    "engineering ": "engineering",
+    "archi": "archi",
+    "architecture": "architecture",
+    "transport industry": "transport industry",
+    "none as of right now": "none as of right now",
+    "nothing": "nothing",
+    "not working": "not working",
+    "not yet working": "not yet working",
+    "beauty": "beauty",
+    "unemployed": "unemployed",
+    "civil engineering": "civil engineering",
+    "aviation": "aviation",
+    "consulting services": "consulting services",
+    "": "",
 }
